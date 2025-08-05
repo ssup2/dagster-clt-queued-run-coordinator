@@ -15,5 +15,7 @@ RUN pip install \
     dagster-obstore==${DAGSTER_OBSTORE_VERSION} \
     redis
 
-COPY src/clt-queued-run-coordinator/ /opt/clt-queued-run-coordinator/
-RUN pip install /opt/cltqrc
+COPY pyproject.toml README.md /opt/clt_queued_run_coordinator/
+COPY src /opt/clt_queued_run_coordinator/src
+
+RUN pip install /opt/clt_queued_run_coordinator
