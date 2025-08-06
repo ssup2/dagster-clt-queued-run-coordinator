@@ -1,15 +1,9 @@
-from typing import Any, List, Mapping, NamedTuple, Optional, Sequence
-
-#from typing_extensions import Self
-
-#from dagster import _check as check
 from dagster._core.run_coordinator.base import SubmitRunContext
 from dagster._core.run_coordinator.queued_run_coordinator import QueuedRunCoordinator
 from dagster._core.storage.dagster_run import DagsterRun
-#from dagster._serdes import ConfigurableClassData
 
 # Constants
-TAG_KEY = "code_location"
+CLT_TAG_KEY = "code_location"
 
 class CodeLocationTaggingQueuedRunCoordinator(QueuedRunCoordinator):
     """
@@ -20,13 +14,10 @@ class CodeLocationTaggingQueuedRunCoordinator(QueuedRunCoordinator):
     """
 
     def submit_run(self, context: SubmitRunContext) -> DagsterRun:
+        # Init variables
         dagster_run: DagsterRun = context.dagster_run
-
-        # Get the code location name from the run
         location_name = dagster_run.remote_job_origin.repository_origin.code_location_origin.location_name
-        
-        # Get required tags for this location
-        required_tags = {TAG_KEY: location_name}
+        required_tags = {CLT_TAG_KEY: location_name}
         
         # Find missing tags that need to be added
         to_add = {}
@@ -47,7 +38,6 @@ class CodeLocationTaggingQueuedRunCoordinator(QueuedRunCoordinator):
         )
         
         return super().submit_run(updated_context)
-
 
 # Short alias for config YAML convenience
 class CLTQueuedRunCoordinator(CodeLocationTaggingQueuedRunCoordinator):
