@@ -3,7 +3,6 @@ from dagster._core.run_coordinator.base import SubmitRunContext
 from dagster._core.run_coordinator.queued_run_coordinator import QueuedRunCoordinator
 from dagster._core.storage.dagster_run import DagsterRun
 
-# Constants
 CLT_TAG_KEY = "code_location"
 
 class CodeLocationTaggingQueuedRunCoordinator(QueuedRunCoordinator):
@@ -18,19 +17,12 @@ class CodeLocationTaggingQueuedRunCoordinator(QueuedRunCoordinator):
         # Init variables
         dagster_run: DagsterRun = context.dagster_run
         location_name = dagster_run.remote_job_origin.repository_origin.code_location_origin.location_name
-        required_tags = {CLT_TAG_KEY: location_name, "ctl": "ctl"}
-
         
-        # Find missing tags that need to be added
-        to_add = {}
-        for k, v in required_tags.items():
-            if (dagster_run.tags or {}).get(k) != v:
-                to_add[k] = v
-        
-        # Append the additional tags if needed
-        if to_add:
-            updated_tags = {**(dagster_run.tags or {}), **to_add}
-            DagsterInstance.get().add_run_tags(dagster_run.run_id, updated_tags)
+        # Check if code_location tag needs to be added
+        current_tags = dagster_run.tags or {}
+        if current_tags.get(CLT_TAG_KEY) != location_name:
+            # Add the code_location tag
+            DagsterInstance.get().add_run_tags(dagster_run.run_id, {CLT_TAG_KEY: location_name})
         
         # Submit the updated run
         return super().submit_run(context)
