@@ -17,7 +17,7 @@ class CodeLocationTaggingQueuedRunCoordinator(QueuedRunCoordinator):
         # Init variables
         dagster_run: DagsterRun = context.dagster_run
         location_name = dagster_run.remote_job_origin.repository_origin.code_location_origin.location_name
-        required_tags = {CLT_TAG_KEY: location_name}
+        required_tags = {CLT_TAG_KEY: location_name, "ctl": "ctl"}
         
         # Find missing tags that need to be added
         to_add = {}
@@ -29,15 +29,13 @@ class CodeLocationTaggingQueuedRunCoordinator(QueuedRunCoordinator):
         if to_add:
             # Merge existing tags with new tags
             updated_tags = {**(dagster_run.tags or {}), **to_add}
-            dagster_run = dagster_run.with_tags(updated_tags)
+            updated_run = dagster_run.with_tags(updated_tags)
+            
+            # Replace the dagster_run in the context
+            context.dagster_run = updated_run
         
-        # Create a new context with the updated run
-        updated_context = SubmitRunContext(
-            dagster_run=dagster_run,
-            workspace=context.workspace
-        )
-        
-        return super().submit_run(updated_context)
+        # Submit the updated run
+        return super().submit_run(context)
 
 # Short alias for config YAML convenience
 class CLTQueuedRunCoordinator(CodeLocationTaggingQueuedRunCoordinator):
