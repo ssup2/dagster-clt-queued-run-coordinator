@@ -7,7 +7,7 @@ TAG_KEY = "code_location"
 
 def get_code_location_name(dagster_run: Any) -> Optional[str]:
     """
-    Retrieve the code location name from a Dagster run (Dagster 1.10.5).
+    Retrieve the code location name from a Dagster run (Dagster 1.10.0).
     """
     origin = getattr(dagster_run, "external_job_origin", None)
     return getattr(origin, "location_name", None) if origin else None
