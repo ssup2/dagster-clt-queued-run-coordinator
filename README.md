@@ -37,14 +37,20 @@ dagsterDaemon:
           dequeue_num_workers: 4
           tag_concurrency_limits:
             - key: "code_location"
-              value: "code_location_a"
+              value: "code-location-a"
               limit: 10
             - key: "code_location"
-              value: "code_location_b"
+              value: "code-location-b"
               limit: 20
 ```
 
+Set the run coordinator to CustomRunCoordinator, and configure CLTQueuedRunCoordinator with the values below:
+
 * Container Image : `ghcr.io/ssup2/dagster-clt-queued-run-coordinator:<release-version>`
+* Coordinator Module :  `clt_queued_run_coordinator.coordinator`
+* Coordinator Class : `CLTQueuedRunCoordinator`
+* Config : Uses the same settings as `QueuedRunCoordinator`, but all option names are in **snake_case** rather than **PascalCase** (e.g., `DequeueIntervalSeconds` → `dequeue_interval_seconds`).
+  * With the `tag_concurrency_limits` option, you can define per-code-location concurrency limits by using the `code_location` tag.
 
 ### Web Server
 
