@@ -12,7 +12,7 @@ code_location:{code_location_name}
 
 To use the `CLTQueuedRunCoordinator`, you must configure the Dagster daemon, the Dagster web server, and the Dagster code-location server.
 
-### Dagster Daemon
+### Daemon
 
 ```yaml
 dagsterDaemon:
@@ -68,5 +68,16 @@ Set the web server image to the same image as the daemon.
 
 * Container Image : `ghcr.io/ssup2/dagster-clt-queued-run-coordinator:<release-version>`
 
-### Code Server
+### Code Location Server
+
+```shell
+# pip
+pip install dagster-clt-queued-run-coordinator
+
+# uv
+uv add dagster-clt-queued-run-coordinator
+```
+
+Code Location Server must install the `dagster-clt-queued-run-coordinator` python package.
+
 
