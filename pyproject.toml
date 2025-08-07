@@ -1,7 +1,7 @@
 [project]
 name = "dagster-clt-queued-run-coordinator"
 version = "0.1.0"
-description = ""Code Location Tagging (CLT) QueuedRunCoordinator – a custom Dagster run coordinator that automatically injects code-location tags before queuing."
+description = "Code Location Tagging (CLT) QueuedRunCoordinator – a custom Dagster run coordinator that automatically injects code-location tags before queuing."
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [{ name = "Jungsub Shin", email = "supsup5642@gmail.com" }]
