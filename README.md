@@ -1,6 +1,6 @@
 # Dagster CLTQueuedRunCoordinator 
 
-`CLTQueuedRunCoordinator` (Code Location Tagging Queued Run Coordinator) is a dagster custom run coordinator that adds a code location tag to all runs. All runs are tagged with the code location name with below format:
+`CLTQueuedRunCoordinator` (Code-Location Tagging Queued Run Coordinator) is a custom Dagster run coordinator that automatically tags every run with its code-location name. Each run receives a tag in the following format:
 
 ```
 code_location:{code_location_name}
@@ -63,6 +63,8 @@ dagsterWebServer:
     tag: "1.10.5"
     pullPolicy: Always
 ```
+
+Set the web server image to the same image as the daemon.
 
 * Container Image : `ghcr.io/ssup2/dagster-clt-queued-run-coordinator:<release-version>`
 
